@@ -1,23 +1,5 @@
 
-# library(stringr)
-# library(plyr)
-# library(XML)
-
-# fips.state=read.csv("./data/FIPS_state_file.txt", sep="|", stringsAsFactors=F)
-# fips.county=read.csv("./data/FIPS_county_file.txt", sep=",", stringsAsFactors=F)
-
-## this file needs extra help, due to commas in some of the subdiv
-## names, which goofs up the read.csv import
-# fips.county.subdivision=read.csv("./data/FIPS_countysubdivision_file.txt", sep=",", stringsAsFactors=F)
-# correct some problem with commas in names
-# index=nchar(fips.county.subdivision$FUNCSTAT)>1
-# fips.county.subdivision$COUSUBNAME[index]=paste(fips.county.subdivision$COUSUBNAME[index], fips.county.subdivision$FUNCSTAT[index], sep=":")
-# fips.county.subdivision$FUNCSTAT[index]="N"
-# fips.county.subdivision=fips.county.subdivision[!is.na(fips.county.subdivision$STATEFP),]
-
-# fips.place=read.csv("./data/FIPS_place_file.txt", sep="|", stringsAsFactors=F)
-
-# .acs.unit.levels
+    # .acs.unit.levels
     #
     # includes all valid types of units for acs estimates
     
@@ -212,16 +194,6 @@ globalVariables(c("fips.state","fips.school","fips.county.subdivision", "fips.am
     print(object@name)
   })
     
-  # setMethod("show", signature(object = "geo.set"), function(object) {
-  #   cat("An object of class \"geo.list\"\n\n")
-  #   cat("Slot \"geo.list\":\n")
-  #   print(lapply(X=object@geo.list, FUN=name))
-  #   cat("Slot \"combine\":\n")
-  #   print(object@combine)
-  #   cat("Slot \"combine.term\":\n")
-  #   print(object@combine.term)
-  # })
-    
     
   # method to combine geos and geo.sets
   setMethod("+", signature(e1 = "geo", e2 = "geo"), function(e1, e2) {
@@ -244,7 +216,8 @@ globalVariables(c("fips.state","fips.school","fips.county.subdivision", "fips.am
   })
   
   # Note on "+"
-  # if geo.list(e1), geo.list(e2) are geo.sets, then take the geolists of them, recusively; 
+  # if geo.list(e1), geo.list(e2) are geo.sets,
+  # then take the geolists of them, recusively; 
   # should always yield flattend set.
   
   setMethod("+", signature(e1 = "geo.set", e2 = "geo.set"), function(e1, e2) {
@@ -309,7 +282,11 @@ globalVariables(c("fips.state","fips.school","fips.county.subdivision", "fips.am
     if (missing(j)) j=i
     x@geo.list[[i]]})
   
-  # need to work on to allow to change combine values -- seem to not like when you replace more than one
+  #
+  # need to work on to allow to change combine values
+  # seem to not like when you replace more than one??
+  # 
+
   setReplaceMethod(f="[", signature="geo.set",
     definition=function(x,i,j,value){
     if (missing(i)) i=j
@@ -1454,36 +1431,7 @@ setMethod("+", signature(e1 = "acs", e2 = "acs"), function(e1, e2) {
   }
            )
 
- ## old; works, but not great.  
-  # .acs.divider=function(num, den, proportion, verbose=F) {
-  #   if (proportion==T) header=.acs.combine.headers(num, den, "/")
-  #   else header=.acs.combine.headers(num, den, ":")
-  #   p=estimate(num)/estimate(den)
-  #   if (all(estimate(den)!=0) && proportion==T & all((p^2 * standard.error(den)^2)>0)){
-  #     header$acs.units=factor("proportion", levels=.acs.unit.levels)
-  #     if (verbose) {warning("** using formula for PROPORTIONS, which assumes that numerator is a SUBSET of denominator **")}
-  #     NEW.ERROR=sqrt(standard.error(num)^2 - (p^2 * standard.error(den)^2))/estimate(den)}
-  #   else {
-  # #   a recommended correction when term under sqrt is negative
-  #     if (proportion==T){
-  #       if(verbose){warning("** due to the nature of some of the errors, using the more conservative formula for RATIOS, which assumes that numerator is not a subset of denominator **")}}
-  #     header$acs.units=factor("ratio", levels=.acs.unit.levels)
-  #     NEW.ERROR=sqrt(standard.error(num)^2 + (p^2 * standard.error(den)^2))/estimate(den)
-  #   }
-  #   acs.obj=new(Class="acs",
-  #     endyear=header$endyear,
-  #     span=header$span,
-  #     modified=T,
-  #     geography=header$geography,
-  #     acs.units=header$acs.units,
-  #     currency.year=header$currency.year,
-  #     acs.colnames=header$acs.colnames,
-  #     estimate=p,
-  #     standard.error=NEW.ERROR)
-  #   acs.obj=.acs.dimnames(acs.obj)
-  #   acs.obj}
-
-# new, to deal with zeroes, and more precise ratio-style correction
+# new version as of 2.0, to deal with zeroes, and more precise ratio-style correction
 
   .acs.divider=function(num, den, proportion, verbose=F, output="result") {
     if (proportion==T) header=.acs.combine.headers(num, den, "/")
