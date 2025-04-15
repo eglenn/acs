@@ -1,5 +1,13 @@
 # acs
 
+## ⛔️ Package Archived ⛔️
+
+It's been a number of years since this package was updated, and it's been mostly hobbling along without support. A number of the features have become unreliable due to changes in the way the Census serves up data via the API. Newer and more well-maintained packages have sprung up to meet the ever-growing needs of R census enthusiasts.
+
+Earlier this year, the package failed a CRAN check. Given the availability of alternative tools, CRAN was allowed to archive it and the package officially went into archive status on `2025-02-12`.
+
+## Description
+
 Provides a general toolkit for downloading, managing, analyzing, and
 presenting data from the U.S. Census, including SF1 (Decennial
 short-form), SF3 (Decennial long-form), and the American Community
